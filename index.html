@@ -16,13 +16,13 @@
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="https://iili.io/KJpXWH7.jpg">
 
-<!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-502569916"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9G0S6G7P38"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-502569916');
+  gtag('config', 'G-9G0S6G7P38');
 </script>
 
 <style>
@@ -107,6 +107,7 @@ h1 {
   margin:1rem 0 1rem 0;
   color: var(--dorado);
   text-shadow: 0 0 10px var(--violeta);
+  transition: all 0.3s ease-in-out;
 }
 
 .text-legal {
@@ -174,12 +175,12 @@ h1 {
 
   <div id="btn-usuario-wrapper" class="button-group">
     <button class="btn btn-green" id="btn-usuario">
-      <img src="https://iili.io/KJpXWH7.jpg" alt="WhatsApp">
+      <img src="https://iili.io/KJpXWH7.jpg" alt="Logo WhatsApp">
       Quiero mi usuario
     </button>
   </div>
 
-  <div id="contador">Actualmente hay 0 jugadores conectados 🎲</div>
+  <div id="contador">Conectando jugadores... 🎰🎲</div>
 
   <div class="text-legal">
     Los premios son otorgados bajo términos y condiciones. +18
@@ -210,7 +211,7 @@ function bloquearBoton() {
 }
 function restaurarBoton() {
   BTN.disabled = false;
-  BTN.innerHTML = `<img src="https://iili.io/KJpXWH7.jpg" alt="WhatsApp"> Quiero mi usuario`;
+  BTN.innerHTML = `<img src="https://iili.io/KJpXWH7.jpg" alt="Logo WhatsApp"> Quiero mi usuario`;
 }
 function verificarBloqueo() {
   const ahora = Date.now();
@@ -241,12 +242,27 @@ function openWhatsApp() {
 }
 BTN.addEventListener('click', openWhatsApp);
 
-// Contador aleatorio
+// Animación de subida de números
+function animarContador(desde, hasta, duracion = 1000) {
+  const elemento = document.getElementById("contador");
+  const inicio = performance.now();
+  function step(tiempo) {
+    const progreso = Math.min((tiempo - inicio) / duracion, 1);
+    const valor = Math.floor(desde + (hasta - desde) * progreso);
+    elemento.innerText = `Actualmente hay ${valor} jugadores conectados 🎰🎲`;
+    if (progreso < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// Contador aleatorio con animación
+let valorActual = 0;
 function actualizarContador(){
   const base = 230;
   const variacion = Math.floor(Math.random()*40);
-  const total = base + variacion;
-  document.getElementById("contador").innerText = `Actualmente hay ${total} jugadores conectados 🎰🎲`;
+  const nuevoValor = base + variacion;
+  animarContador(valorActual, nuevoValor, 1200);
+  valorActual = nuevoValor;
 }
 actualizarContador();
 setInterval(actualizarContador, 5000);
